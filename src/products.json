@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "p1",
+    "_ownerId": "u1",
+    "title": "Black Hoodie",
+    "imageUrl": "https://picsum.photos/200/300",
+    "price": 49.99,
+    "category": "Hoodies",
+    "description": "Warm cotton hoodie perfect for winter."
+  },
+  {
+    "_id": "p2",
+    "_ownerId": "u2",
+    "title": "Blue Denim Jacket",
+    "imageUrl": "https://picsum.photos/200/300",
+    "price": 69.99,
+    "category": "Jackets",
+    "description": "Classic denim jacket with modern style."
+  },
+  {
+    "_id": "p3",
+    "_ownerId": "u3",
+    "title": "White T-Shirt",
+    "imageUrl": "https://picsum.photos/200/300",
+    "price": 19.99,
+    "category": "T-Shirts",
+    "description": "Everyday cotton t-shirt, very comfortable."
+  },
+  {
+    "_id": "p4",
+    "_ownerId": "u1",
+    "title": "Red Dress",
+    "imageUrl": "https://picsum.photos/200/300",
+    "price": 89.99,
+    "category": "Dresses",
+    "description": "Elegant red dress for special occasions."
+  }
+]

@@ -1,0 +1,338 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px;
+  background-color:  #F8FAFC; 
+  min-height: 100vh;
+  max-width: 1600px;
+  border-radius: 20px;
+  width: 92%;
+}
+
+.container {
+  background-color: #FFFFFF;
+  width: 92%;
+  max-width: 1600px;
+  border-radius: 24px;
+  min-height: 80vh;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  margin: 0 auto 40px auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.dashboards {
+  display: flex;
+  gap: 8px;
+  width: 92%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-left: 20px;
+  margin-bottom: -10px; 
+  position: relative;
+  z-index: 1;
+}
+
+.dashboards button {
+  background: #E2E8F0; 
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  color: #64748B;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.dashboards button:hover {
+  background-color: #CBD5E1;
+  color: #334155;
+}
+
+.activeDashboard {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important; 
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  padding-bottom: 20px;
+  font-weight: 700 !important;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #EAEAEA;
+  padding-bottom: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0;
+}
+
+.primaryBtn {
+  background-color: #24d984; 
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primaryBtn:hover {
+  background-color: #1dac6a;
+  transform: translateY(-1px);
+}
+
+.cancelBtn {
+  background-color: transparent;
+  color: #64748B;
+  border: 1px solid #CBD5E1;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+  background-color: #F1F5F9;
+  color: #334155;
+}
+
+.form {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748B; /* Slate 500 */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 2px;
+}
+
+.input, 
+.textarea, 
+.select {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0; /* Slate 200 */
+  background-color: #F8FAFC; /* Slate 50 */
+  font-size: 15px;
+  color: #0F172A; /* Slate 900 */
+  transition: all 0.2s ease;
+  font-family: inherit;
+  outline: none;
+}
+
+.input:focus, 
+.textarea:focus, 
+.select:focus {
+  background-color: #FFFFFF;
+  border-color: #24d984; 
+  box-shadow: 0 0 0 4px rgba(36, 217, 132, 0.1);
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.formRow {
+  display: flex;
+  gap: 20px;
+}
+
+.formRow > div {
+  flex: 1;
+}
+
+.tableThumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #E2E8F0;
+  background-color: #F1F5F9;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.statusCompleted { background-color: #DCFCE7; color: #166534; } 
+.statusProcessing { background-color: #FEF3C7; color: #92400E; } 
+.statusCancelled { background-color: #FEE2E2; color: #991B1B; } 
+.statusDefault { background-color: #F1F5F9; color: #475569; }
+
+.mono {
+  font-family: 'SF Mono', 'Roboto Mono', Menlo, monospace;
+  font-size: 12px;
+  color: #64748B;
+}
+
+.price {
+  font-family: 'SF Mono', 'Roboto Mono', Menlo, monospace;
+  font-weight: 600;
+  color: #0F172A;
+  font-size: 14px;
+}
+
+.categoryBadge {
+  background-color: #F1F5F9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #E2E8F0;
+}
+
+.actionGroupRight {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 8px;
+  width: 100%;
+}
+
+.actionBtn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.viewBtn { color: #0284C7; background-color: #E0F2FE; } 
+.viewBtn:hover { background-color: #BAE6FD; }
+
+.editBtn { color: #D97706; background-color: #FEF3C7; } 
+.editBtn:hover { background-color: #FDE68A; }
+
+.deleteBtn { color: #DC2626; background-color: #FEE2E2; } 
+.deleteBtn:hover { background-color: #FECACA; }
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modalContentSmall {
+  background: #FFFFFF;
+  padding: 32px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContentSmall h3 {
+  margin: 0;
+  color: #1E293B;
+  font-size: 20px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding-top: 20px;
+  }
+  
+  .container {
+    width: 100%;
+    border-radius: 0;
+    padding: 20px;
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+
+  .dashboards {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 10px;
+    gap: 4px;
+    border-radius: 0;
+  }
+  
+  .dashboards button {
+    padding: 10px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .actionGroupRight {
+    justify-content: flex-start;
+  }
+}
+

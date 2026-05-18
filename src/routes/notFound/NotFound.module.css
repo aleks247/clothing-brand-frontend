@@ -1,0 +1,64 @@
+.container {
+  background-color: var(--card-bg);
+  width: 92%;
+  max-width: 1400px;
+  border-radius: 24px;
+  min-height: 60vh; /* Shorter than main pages */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px;
+}
+
+.errorCode {
+  font-size: 120px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-main);
+  letter-spacing: -5px;
+  margin-bottom: 20px;
+  opacity: 0.1; /* Subtle background style */
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+
+.homeBtn {
+  background-color: var(--primary-black);
+  color: white;
+  text-decoration: none;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.2s ease, background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.homeBtn:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .container { width: 100%; border-radius: 0; box-shadow: none; min-height: 80vh; }
+  .errorCode { font-size: 80px; }
+  .title { font-size: 24px; }
+}

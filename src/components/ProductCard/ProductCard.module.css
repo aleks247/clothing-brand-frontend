@@ -1,0 +1,158 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* When hovering, dim the image wrapper slightly */
+.card:hover .imgWrapper {
+  opacity: 0.9;
+}
+
+.imgWrapper {
+  background-color: #F4F4F4;
+  width: 100%;
+  aspect-ratio: 3 / 4; /* Maintains standard fashion poster shape */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.3s;
+}
+
+/* NEW: Style for the real image */
+.productImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image fills the box without distorting */
+  display: block;
+}
+
+.tag {
+  position: absolute; 
+  top: 10px; 
+  left: 10px; 
+  background: white;
+  padding: 4px 10px; 
+  font-size: 11px; 
+  font-weight: 700;
+  text-transform: uppercase; 
+  border-radius: 4px;
+  z-index: 2; /* Ensures tag sits on top of image */
+}
+
+.info h3 {
+  font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--text-main);
+}
+
+.desc {
+  font-size: 13px; color: var(--text-muted); margin-bottom: 8px;
+}
+
+.footer {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-top: auto;
+}
+
+.price { font-size: 16px; font-weight: 700; }
+
+/* NEW BUTTON STYLE */
+.addBtn {
+  background-color: var(--primary-black);
+  color: white;
+  border: none;
+  padding: 8px 16px;       /* Rectangle padding */
+  border-radius: 20px;     /* Pill shape */
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: transform 0.2s linear;
+}
+
+.addBtn:hover {
+  background-color: #0a71ba;
+  transform: translateY(-3px);
+}
+
+.colors { display: flex; gap: 6px; }
+
+.dot {
+  width: 12px; height: 12px; border-radius: 50%; border: 1px solid #ddd; display: block;
+}
+
+/*
+Old design with borders
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #F0F0F0;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border-color: transparent;
+}
+
+.imgWrapper {
+  background-color: #F8F8F8;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tag {
+  position: absolute; top: 10px; left: 10px; background: white;
+  padding: 5px 10px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.info h3 {
+  font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--text-main);
+}
+
+.desc {
+  font-size: 13px; color: var(--text-muted); margin-bottom: 12px;
+}
+
+.footer {
+  display: flex; justify-content: space-between; align-items: center; margin-top: auto;
+}
+
+.price { font-size: 16px; font-weight: 700; }
+
+.colors { display: flex; gap: 6px; }
+
+.dot {
+  width: 14px; height: 14px; border-radius: 50%; border: 1px solid #E5E5E5; display: block;
+} */
