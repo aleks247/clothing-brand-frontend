@@ -1,38 +1,39 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-import * as request from '../utils/request';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    // const [auth, setAuth] = useState(null);
     const navigate = useNavigate();
 
     const [auth, setAuth] = useState(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (!accessToken) return null;
-        return {
-            accessToken,
-            email: localStorage.getItem('email'),
-            _id: localStorage.getItem('_id'),
-            username: localStorage.getItem('username'),
-            role: localStorage.getItem('role')
-        };
+        const savedAuth = localStorage.getItem('auth');
+        return savedAuth ? JSON.parse(savedAuth) : null;
     });
-
 
     const loginSubmitHandler = async (values) => {
         try {
-            const result = await request.post('http://localhost:3030/users/login', values);
+            const response = await fetch('http://localhost:8081/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            });
 
-            setAuth(result);
-            localStorage.setItem('accessToken', result.accessToken);
-            localStorage.setItem('email', result.email);
-            localStorage.setItem('username', result.username);
-            localStorage.setItem('role', result.role);
-            localStorage.setItem('_id', result._id);
+            const result = await response.json();
 
-            navigate('/'); 
+            if (!response.ok) throw new Error(result.message || 'Login failed');
+
+            const authData = {
+                accessToken: result.token,
+                email: result.email,
+                username: result.username,
+                role: result.role,
+                _id: result.userId
+            };
+
+            setAuth(authData);
+            localStorage.setItem('auth', JSON.stringify(authData));
+            navigate('/');
         } catch (error) {
             alert(error.message);
         }
@@ -40,19 +41,34 @@ export const AuthProvider = ({ children }) => {
 
     const registerSubmitHandler = async (values) => {
         if (values.password !== values.confirmPassword) {
-             return alert("Passwords don't match!");
+            return alert("Passwords don't match!");
         }
 
         try {
-            const result = await request.post('http://localhost:3030/users/register', values);
+            const response = await fetch('http://localhost:8081/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: values.email,
+                    username: values.username,
+                    password: values.password
+                }),
+            });
 
-            setAuth(result);
-            localStorage.setItem('accessToken', result.accessToken);
-            localStorage.setItem('email', result.email);
-            localStorage.setItem('username', result.username);
-            localStorage.setItem('role', result.role);
-            localStorage.setItem('_id', result._id);
+            const result = await response.json();
 
+            if (!response.ok) throw new Error(result.message || 'Registration failed');
+
+            const authData = {
+                accessToken: result.token,
+                email: values.email,
+                username: values.username,
+                role: 'USER',
+                _id: result.userId
+            };
+
+            setAuth(authData);
+            localStorage.setItem('auth', JSON.stringify(authData));
             navigate('/');
         } catch (error) {
             alert(error.message);
@@ -60,36 +76,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logoutHandler = async () => {
-        try {
-            await request.get('http://localhost:3030/users/logout');
-        } catch (error) {
-            console.log(error);
-        }
-        
         setAuth(null);
-        localStorage.clear();
+        localStorage.removeItem('auth');
         navigate('/');
-    };
-
-    const userUpdate = (data) => {
-        setAuth(state => {
-            const newState = { ...state, ...data };
-            
-            if (data.email) localStorage.setItem('email', data.email);
-            if (data.username) localStorage.setItem('username', data.username);
-            
-            return newState;
-        });
     };
 
     const values = {
         loginSubmitHandler,
         registerSubmitHandler,
         logoutHandler,
-        userUpdate,
         user: auth,
-        userId: auth?._id,
-        email: auth?.email,
         isAuthenticated: !!auth?.accessToken,
     };
 
@@ -99,7 +95,5 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
-    
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
+
+export const useAuth = () => useContext(AuthContext);

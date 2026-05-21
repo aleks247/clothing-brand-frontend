@@ -21,7 +21,7 @@ export default function Profile() {
 
             try {
                 const response = await fetch(
-                    `http://localhost:3030/jsonstore/users/${user._id}`
+                    `http://localhost:8081/users/${user._id}`
                 );
 
                 if (!response.ok) throw new Error("Failed to fetch user");

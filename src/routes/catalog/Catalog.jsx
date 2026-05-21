@@ -57,9 +57,9 @@ export default function Catalog({ products, gender }) {
         let result = [...products];
 
         if (gender === "male") {
-            result = result.filter(p => p.gender === "male" || p.gender === "unisex");
+            result = result.filter(p => p.gender === "MALE" || p.gender === "UNISEX");
         } else if (gender === "female") {
-            result = result.filter(p => p.gender === "female" || p.gender === "unisex");
+            result = result.filter(p => p.gender === "FEMALE" || p.gender === "UNISEX");
         }
 
         if (searchTerm) {

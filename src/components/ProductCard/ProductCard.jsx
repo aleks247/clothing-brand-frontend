@@ -16,7 +16,6 @@ export default function ProductCard({ product }) {
         addToCart(product);
     };
 
-    // console.log(product.images[0].imageUrl)
     return (
         <Link
             to={`/catalog/${product.id}`}
@@ -30,7 +29,7 @@ export default function ProductCard({ product }) {
 
                 {product.images.length > 0 && !imageError ? (
                     <img
-                        src={product.images[0].imageUrl}
+                        src={"http://localhost:8081"+product.images[0].imageUrl}
                         alt={product.name}
                         className={styles["productImg"]}
                         onError={() => setImageError(true)}

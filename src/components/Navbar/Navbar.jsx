@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router";
 import styles from "./Navbar.module.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
-// #TODO Make orders page for user
+
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
     const location = useLocation();
-    const { isAuthenticated, logoutHandler, userId } = useAuth();
+    const { isAuthenticated, logoutHandler, user } = useAuth();
     const {
         cart,
         removeFromCart,
@@ -36,15 +36,13 @@ export default function Navbar() {
 
     const handleBuy = async () => {
         if (cart.length === 0) return;
-
+        
         const order = {
-            products: cart.map((item) => ({
-                id: item.id,
+            userId: user._id,
+            items: cart.map((item) => ({
+                productId: item.id,
                 quantity: item.quantity,
             })),
-            total: cartTotal,
-            user_id: userId,
-            date: new Date().toISOString(),
         };
 
         if (
@@ -57,7 +55,7 @@ export default function Navbar() {
 
         try {
             const response = await fetch(
-                "http://localhost:3030/jsonstore/orders",
+                "http://localhost:8081/orders",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -66,7 +64,8 @@ export default function Navbar() {
             );
 
             if (!response.ok) {
-                throw new Error("Failed to send order");
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || "Failed to send order");
             }
 
             clearCart();
@@ -74,7 +73,7 @@ export default function Navbar() {
             alert("Order placed successfully!");
         } catch (err) {
             console.error(err);
-            alert("Error: Could not complete order!");
+            alert(`Error: ${err.message}`);
         }
     };
 
@@ -112,7 +111,7 @@ export default function Navbar() {
                             Login
                         </Link>
                     ) : (<>
-                        {localStorage.getItem('role')==="admin" && 
+                        { user?.role==="ADMIN" && 
                         <Link to="/admin" className={getLinkClass("/admin")}>
                             Admin
                         </Link>
@@ -128,7 +127,7 @@ export default function Navbar() {
                                 >
                                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                 </svg>
-                                {localStorage.getItem("email")?.split("@")[0] ||
+                                {user?.username || user?.email?.split("@")[0] || 
                                     "Profile"}
                                 <span style={{ fontSize: "10px", marginLeft: "2px" }}>
                                     ▼
@@ -209,7 +208,7 @@ export default function Navbar() {
                                                     >
                                                         <img
                                                             src={
-                                                                item.images[0] ||
+                                                                "http://localhost:8081"+item.images[0].imageUrl ||
                                                                 "https://via.placeholder.com/50"
                                                             }
                                                             alt="Thumb"
@@ -227,7 +226,7 @@ export default function Navbar() {
 
                                                             <div className={styles["qtyControls"]}>
                                                                 <button
-                                                                    className={styles['qty-remove']}                                                                
+                                                                    className={styles['qty-remove']}                                      
                                                                     onClick={() =>
                                                                         updateQuantity(
                                                                             item.id,

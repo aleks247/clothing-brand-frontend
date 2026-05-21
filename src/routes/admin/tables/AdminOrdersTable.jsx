@@ -2,21 +2,25 @@ import { useState, useMemo, useEffect } from "react";
 import Table from "../../../components/Table/Table";
 import { put } from "../../../utils/request";
 import styles from "../Admin.module.css";
-
+// Make the status dropdown to get the values from the backend!!!
 export default function AdminOrdersTable({ orders = [], users = [], products = [], onDelete }) {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [newStatus, setNewStatus] = useState("Pending");
 
     const enrichedOrders = useMemo(() => {
-        return orders.map(order => {
-            const user = users.find(u => u.id === order.user_id);
-            const detailedProducts = (order.products || []).map(p => {
-                const product = products.find(pr => Number(pr.id) === Number(p.id));
-                return { ...p, name: product?.name || "Unknown product" };
-            });
-            return { ...order, user, detailedProducts };
-        });
-    }, [orders, users, products]);
+    return orders.map(order => {
+        const user = order.user; 
+        
+        return { 
+            ...order, 
+            user, 
+            detailedProducts: (order.items || []).map(item => ({
+                ...item,
+                name: item.productName
+            }))
+        };
+    });
+}, [orders]);
 
     const getStatusClass = (status) => {
         const lower = status?.toLowerCase() || "";
@@ -51,8 +55,8 @@ export default function AdminOrdersTable({ orders = [], users = [], products = [
             };
 
             await put(
-                `http://localhost:3030/jsonstore/orders/${selectedOrder.id}`,
-                orderToSave
+                `http://localhost:8081/orders/${selectedOrder.id}/status`, 
+                { status: newStatus.toUpperCase() }
             );
 
             enrichedOrders.forEach((o) => {
@@ -64,20 +68,23 @@ export default function AdminOrdersTable({ orders = [], users = [], products = [
             alert("Failed to update status");
         }
     };
-
-    const columns = [
-        { label: "Order ID", render: o => <span className={styles.mono}>#{o.id.slice(0, 8)}</span> },
-        { label: "Customer", render: o => o.user ? `${o.user.firstName} ${o.user.lastName}` : o.user_id },
-        { label: "Total", render: o => `$${o.total.toFixed(2)}` },
-        {
-            label: "Status",
-            render: o => (
-                <span className={`${styles.statusBadge} ${getStatusClass(o.status)}`}>
-                    {o.status}
-                </span>
-            )
-        }
-    ];
+    
+const columns = [
+    { 
+        label: "Order ID", 
+        render: o => <span className={styles.mono}>#{String(o.id).slice(0, 8)}</span> 
+    },
+    { label: "Customer", render: o => o.user ? (o.user.firstName == null || o.user.lastName == null ? o.user.username : `${o.user.firstName} ${o.user.lastName}`) : o.user.id },
+    { label: "Total", render: o => `$${Number(o.totalAmount || 0).toFixed(2)}` },
+    {
+        label: "Status",
+        render: o => (
+            <span className={`${styles.statusBadge} ${getStatusClass(o.status)}`}>
+                {o.status}
+            </span>
+        )
+    }
+];
 
     const actions = (order) => (
         <div className={styles.actionGroupRight}>
@@ -87,12 +94,12 @@ export default function AdminOrdersTable({ orders = [], users = [], products = [
             >
                 Change Status
             </button>
-            <button
+            {/* <button
                 className={`${styles.actionBtn} ${styles.deleteBtn}`}
                 onClick={() => onDelete(order.id)}
             >
                 Delete
-            </button>
+            </button> */}
         </div>
     );
 

@@ -7,6 +7,7 @@ export default function Register() {
     const { registerSubmitHandler } = useAuth();
 
     const [formValues, setFormValues] = useState({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -42,6 +43,22 @@ export default function Register() {
                 </p>
 
                 <form className={styles["form"]} onSubmit={onSubmit}>
+                    <div className={styles["inputGroup"]}>
+                        <label htmlFor="username" className={styles["label"]}>
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="username"
+                            value={formValues.username}
+                            onChange={onChangeHandler}
+                            className={styles["input"]}
+                            required
+                        />
+                    </div>
+
                     <div className={styles["inputGroup"]}>
                         <label htmlFor="email" className={styles["label"]}>
                             Email

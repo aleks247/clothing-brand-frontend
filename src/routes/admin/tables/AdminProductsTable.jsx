@@ -7,9 +7,10 @@ export default function AdminProductsTable({ products, onDelete }) {
         {
             label: "Product",
             render: (p) => (
+                
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <img
-                        src={p.images?.[0] || p.image || ""}
+                        src={"http://localhost:8081"+p.images?.[0].imageUrl || p.image || ""}
                         alt={p.name}
                         className={styles.tableThumb}
                     />

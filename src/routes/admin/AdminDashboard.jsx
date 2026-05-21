@@ -22,16 +22,16 @@ export default function AdminDashboard() {
         const fetchData = async () => {
             try {
                 if (active === "products") {
-                    const data = await get("http://localhost:3030/jsonstore/products");
+                    const data = await get("http://localhost:8081/products");
                     setProducts(Object.entries(data || {}).map(([id, p]) => ({ id, ...p })));
                 } else if (active === "users") {
-                    const data = await get("http://localhost:3030/jsonstore/users");
+                    const data = await get("http://localhost:8081/users");
                     setUsers(Object.entries(data || {}).map(([id, u]) => ({ id, ...u })));
                 } else if (active === "orders") {
                     const [ordersData, usersData, productsData] = await Promise.all([
-                        get("http://localhost:3030/jsonstore/orders"),
-                        get("http://localhost:3030/jsonstore/users"),
-                        get("http://localhost:3030/jsonstore/products")
+                        get("http://localhost:8081/orders"),
+                        get("http://localhost:8081/users"),
+                        get("http://localhost:8081/products")
                     ]);
 
                     setOrders(Object.entries(ordersData || {}).map(([id, o]) => ({ id, ...o })));
@@ -52,7 +52,7 @@ export default function AdminDashboard() {
         const confirmMsg = `Are you sure you want to delete this ${collection.slice(0, -1)}?`;
         if (!window.confirm(confirmMsg)) return;
         try {
-            await remove(`http://localhost:3030/jsonstore/${collection}/${id}`);
+            await remove(`http://localhost:8081/${collection}/${id}`);
             setter(prev => prev.filter(x => x.id !== id));
         } catch {
             alert("Failed to delete item.");

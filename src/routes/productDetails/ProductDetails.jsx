@@ -10,14 +10,23 @@ export default function ProductDetails() {
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    const [mainImage, setMainImage] = useState("");
+    const [mainImage, setMainImage] = useState(null);
+
+    const BACKEND_URL = "http://localhost:8081";
 
     useEffect(() => {
-        fetch(`http://localhost:3030/jsonstore/products/${id}`)
+        fetch(`${BACKEND_URL}/products/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setProduct(data);
-                setMainImage(data.images?.[0] || data.image || "");
+                // Safely set the initial image object if it exists
+                if (data.images && data.images.length > 0) {
+                    setMainImage(data.images[0]);
+                } else if (data.image) {
+                    setMainImage({ imageUrl: data.image });
+                } else {
+                    setMainImage(null);
+                }
             })
             .catch((err) => alert(err.message));
     }, [id]);
@@ -33,30 +42,38 @@ export default function ProductDetails() {
         );
     }
 
-    const images =
-        product.images && product.images.length > 0
-            ? product.images
-            : [product.image];
+    // Normalized array to ensure we are always mapping over objects with an 'imageUrl' property
+    const images = product.images && product.images.length > 0
+        ? product.images
+        : [{ imageUrl: product.image || "" }];
 
     return (
         <div className={styles.container}>
             <div className={styles.gallery}>
                 <div className={styles.mainImageWrapper}>
-                    <img
-                        src={mainImage}
-                        alt={product.name}
-                        className={styles.mainImage}
-                    />
+                    {mainImage && mainImage.imageUrl ? (
+                        <img
+                            src={`${BACKEND_URL}${mainImage.imageUrl}`}
+                            alt={product.name}
+                            className={styles.mainImage}
+                        />
+                    ) : (
+                        <div className={styles.placeholder} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px', background: '#eee' }}>
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.2 }}>
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0 2-.9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                            </svg>
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.thumbnails}>
                     {images.map((img, index) => (
                         <img
                             key={index}
-                            src={img}
+                            src={`${BACKEND_URL}${img.imageUrl}`}
                             alt={`View ${index}`}
                             className={`${styles.thumb} ${
-                                mainImage === img ? styles.activeThumb : ""
+                                mainImage?.imageUrl === img.imageUrl ? styles.activeThumb : ""
                             }`}
                             onClick={() => setMainImage(img)}
                         />
@@ -76,7 +93,7 @@ export default function ProductDetails() {
                 </div>
 
                 <h1 className={styles.title}>{product.name}</h1>
-                <div className={styles.price}>${product.price.toFixed(2)}</div>
+                <div className={styles.price}>${product.price ? product.price.toFixed(2) : "0.00"}</div>
 
                 <p className={styles.description}>{product.desc}</p>
 
@@ -107,9 +124,11 @@ export default function ProductDetails() {
                 <button
                     className={styles.addToCartBtn}
                     onClick={() => {
-                        isAuthenticated? addToCart(product) : navigate("/login")
+                        isAuthenticated ? addToCart(product) : navigate("/login");
                     }}
-                >Add to Cart</button>
+                >
+                    Add to Cart
+                </button>
             </div>
         </div>
     );
